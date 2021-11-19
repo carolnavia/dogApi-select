@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import getBreeds from "../helpers/getBreeds";
+import Error from "./Error";
 
 const initialBreeds = [
   {
@@ -21,18 +22,26 @@ export const Select = ({ updateDog }) => {
   }, []);
 
   const updateBreeds = () => {
-    getBreeds().then((newBreeds) => {
-      setBreeds(newBreeds);
-    });
+    getBreeds()
+      .then((newBreeds) => {
+        setBreeds(newBreeds);
+      })
+      .catch((error) => {
+        console.log(error);
+        setErrors("Error al cargar las razas");
+      });
   };
 
   return (
-    <select onChange={() => updateDog()}>
-      {breeds.map((breed) => (
-        <option value={breed.id} key={breed.id}>
-          {breed.name}
-        </option>
-      ))}
-    </select>
+    <>
+      <select onChange={() => updateDog()}>
+        {breeds.map((breed) => (
+          <option value={breed.id} key={breed.id}>
+            {breed.name}
+          </option>
+        ))}
+      </select>
+      {error && <Error error={error} />}
+    </>
   );
 };

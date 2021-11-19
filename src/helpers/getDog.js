@@ -12,6 +12,14 @@ const getDog = async (breedId) => {
       : `https://api.TheDogAPI.com/v1/images/search?breed_ids=${breedId}`;
 
   const res = await fetch(url);
+
+  if (!res.ok) {
+    // error para desarrollador
+
+    const { url, status, statusText } = res;
+
+    throw Error(`Error: in fetch${url}, ${status}, ${statusText} `);
+  }
   const [data] = await res.json();
 
   let {

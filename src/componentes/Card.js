@@ -5,7 +5,7 @@ export const Card = ({ dog, updateDog, loading }) => {
   if (loading) return <Loading />;
 
   return (
-    <div className="card" onClick={() => updateDog(dog.breed.id)}>
+    <div className="card bounce" onClick={() => updateDog(dog.breed.id)}>
       <img src={dog.image} alt="dog" />
       <p>{dog.breed.name}</p>
     </div>

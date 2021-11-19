@@ -5,7 +5,10 @@ const getBreeds = async () => {
   //console.log(res);
   if (!res.ok) {
     // error para desarrollador
-    throw Error("Error");
+
+    const { url, status, statusText } = res;
+
+    throw Error(`Error: in fetch${url}, ${status}, ${statusText} `);
   }
 
   const breeds = await res.json();

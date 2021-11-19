@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Card } from "./componentes/Card";
 import { Select } from "./componentes/Select";
 import getDog from "./helpers/getDog";
+import Error from "./componentes/Error";
 
 const initialDog = {
-  image:
-    "https://cdn.pixabay.com/photo/2017/08/17/15/34/pug-2651728_960_720.jpg",
+  image: "",
   breed: {
-    id: 1,
-    name: "Pug",
+    id: 0,
+    name: "",
   },
 };
 
 function App() {
   const [dog, setDog] = useState(initialDog);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     updateDog();
@@ -22,15 +23,23 @@ function App() {
 
   const updateDog = (breedId) => {
     setLoading(true);
-    getDog(breedId).then((newDog) => {
-      setDog(newDog);
-      setLoading(false);
-    });
+    getDog(breedId)
+      .then((newDog) => {
+        setDog(newDog);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError("Error al cargar un perro");
+        setLoading(false);
+      });
   };
 
   return (
     <div className="app">
       <Select updateDog={updateDog} />
+
+      {error && <Error error={error} />}
       <Card dog={dog} updateDog={updateDog} loading={loading} />
     </div>
   );
